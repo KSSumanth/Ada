@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<string.h>
+
+void shift_table(char p[],int t[]){
+int m=strlen(p);
+for(int i=0;i<128;i++){
+    t[i]=m;
+}
+for(int i=0;i<=m-2;i++){
+    t[p[i]]=m-i-1;//3 2 1 will be stored
+}
+}
+int horspool_match(char p[],char t[]){
+int m,n,k,i,s[256];
+shift_table(p,s);
+m=strlen(p);
+n=strlen(t);
+i=m-1;
+while(i<=n-1){
+    k=0;
+    while(k<=m-1 && t[i-k]==p[m-1-k]){
+        k=k+1;
+    }
+    if(k==m)
+        return i-m+1;
+    i=i+s[t[i]];
+}
+return -1;
+}
+int main()
+{
+    char p[50],t[100];
+    int pos;
+    printf("enter the text string\n");
+    scanf("%s",t);
+    printf("enter the pattern string\n");
+    scanf("%s",p);
+    pos=horspool_match(p,t);
+    if(pos==-1){
+        printf("string not matched\n");
+        exit(0);
+    }
+    printf("string is found at pos %d\n",pos+1);
+}
